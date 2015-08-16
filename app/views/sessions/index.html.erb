@@ -1,0 +1,87 @@
+
+
+
+  <div class="row v-top">
+    <div class="container">
+      <div class="col-md-3">
+        <h2 class="main-header"><a class="main-header" href="">ClassChat</a></h2>
+      </div>
+
+      <div class="col-md-offset-4 col-md-5">
+
+        <form class="form-inline" action='/sessions' method='post'>
+          <input type='hidden' name='authenticity_token' value="<%= form_authenticity_token %>">
+
+
+          <div class="form-group">
+            <input type='text' class="form-control" name='email' placeholder="email">
+          </div>
+
+          <div class="form-group">
+            <input type='password' class="form-control" name='password' placeholder="password">
+          </div>
+
+          <button type="submit" class="btn btn-default">Log In</button>
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="row">
+    <div class="container space15">
+      <div class="col-md-7">
+        <h2>Find who's in your Lectures!</h2>
+        <p><span class="emphi">Meet</span> your fellow classmates</p>
+        <p><span class="emphi">Connect</span> through our message boards and chatrooms</p>
+        <p><span class="emphi">Share</span> knowledge and ideas</p>
+      </div>
+      <div class="col-md-5">
+
+
+      <h1>Sign Up</h1>
+      <p>It's free and always will be</p>
+      <form action='/users' method='post'>
+        <input type='hidden' name='authenticity_token' value="<%= form_authenticity_token %>">
+        <div class="form-group">
+          <input class="form-control" type='text' name='first_name' placeholder="First name">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type='text' name='last_name' placeholder="Last name">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type='text' name='email' placeholder="Email">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type='password' name='password' placeholder="Password">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type='password' name='password_confirmation' placeholder="Password confirmation">
+        </div>
+        <button type="submit" class="btn btn-default">Sign Up</button>
+      </form>
+      <% if flash[:errors] %>
+        <% flash[:errors].each do |e| %>
+          <p class="space15 error-red"><%= e %></p>
+        <% end %>
+      <% end %>
+
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row footered">
+    <div class="container space40">
+      <ul class="nav nav-pills">
+        <li role="presentation" class="disabled"><a href="#">About</a></li>
+        <li role="presentation" class="disabled"><a href="#">Help</a></li>
+        <li role="presentation" class="disabled"><a href="#">Careers</a></li>
+      </ul>
+    </div>
+  </div>

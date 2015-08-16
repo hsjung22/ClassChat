@@ -1,0 +1,91 @@
+<div class="row v-top">
+  <div class="container">
+    <div class="col-md-3">
+      <h2 class="main-header"><a class="main-header" href="">ClassChat</a></h2>
+    </div>
+
+    <div class="pull-right">
+
+      <% if current_user %>
+        <form class="space15" action='/sessions' method='post'>
+          <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+          <input type='hidden' name='_method' value='delete'>
+          <button type='submit' class="btn btn-default">Log Out</button>
+        </form>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="container">
+
+  <h3>Hi <%= current_user.first_name %> <%= current_user.last_name %>!</h3>
+
+  <div class="col-md-8">
+    <p><span class="emphi"> Classes: </span></p>
+
+
+
+
+    <% @groups.each do |group| %>
+      <div class="row space15">
+        <div class="col-md-1">
+          <% if group.user == current_user %>
+            <form action="/classes/<%= group.id %>" method='post'>
+              <input type='hidden' name='_method' value='delete'>
+              <input type='hidden' name='authenticity_token' value="<%= form_authenticity_token %>">
+              <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span>
+              </button>
+            </form>
+          <% end %>
+        </div>
+        <div class="col-md-4">
+          <div class="class-bot-border">
+            <p><a href="/classes/<%= group.id %>"><%= group.name %></a> - <%= group.description %></p>
+            <p>Students: <%= group.users.count %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+
+
+
+  </div>
+
+
+  <div class="col-md-4">
+    <div class="row">
+    <p><span class="emphi">Create a new class </span></p>
+      <form action='/classes' method='post'>
+        <input type='hidden' name='authenticity_token' value="<%= form_authenticity_token %>">
+        <div class="form-group">
+          <input class="form-control" type='text' name='name' placeholder="Course name">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type='text' name='description' placeholder="Description">
+        </div>
+          <button class='btn btn-default pull-right' type='submit'>Create</button>
+      </form>
+      <% if flash[:errors] %>
+        <% flash[:errors].each do |e| %>
+          <p class="space15 error-red"><%= e %></p>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="row space15">
+      <p><span class="emphi">How to use ClassChat</span></p>
+      <ol>
+        <li class="space15">Find or create your class.</li>
+        <li class="space15">Start collaborating with your classmates!</li>
+      </ol>
+    </div>
+
+  </div>
+
+</div>

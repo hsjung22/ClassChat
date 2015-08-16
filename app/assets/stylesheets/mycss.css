@@ -1,0 +1,86 @@
+/*comment*/
+.comment-time{
+	font-size: .9em;
+}
+.comment-top-border{
+	border-top: 1.5px dotted darkgrey;
+}
+.comment-ind{
+	margin-left: 50px;
+}
+/*end comment*/
+
+
+/*post*/
+.post-top-border{
+	border-top: 1.5px dotted darkgrey;
+	margin-top: 8px;
+}
+.form-group-show{
+	margin-bottom: 8px;
+}
+/*end post*/
+
+/*chat*/
+.chat-input{
+	border-radius: 20px;
+	border:1.7px solid darkgrey;
+	/*min-height: 70vh;*/
+	height: 50vh;
+	background-color: #efd2bc;
+	margin-bottom: 10px;
+	overflow: scroll; 
+}
+.padding-chat{
+	padding-top: 10px;
+	padding-left: 15px;
+}
+/*end chat*/
+
+
+/* general config*/
+.main-header{
+	color:white;
+}
+.form-inline{
+	margin-top: 12px;
+}
+.v-top{
+	background-color: #b42b36;
+	padding-top: 15px;
+}
+.space15{
+	margin-top: 15px;
+}
+.space40{
+	margin-top: 40px;
+}
+.emphi{
+	font-size: 1.4em;
+	font-weight: 30;
+	color: #b42b36;
+}
+.bottom-align{
+	padding-top: 15px;
+}
+.no-style{
+	padding-left: 0;
+	list-style: none;
+}
+.btspc{
+	margin-top: 22px;
+}
+
+.error-red{
+	color: #b42b36
+}
+
+.padding-right30{
+	padding-right: 30px;
+}
+/*class*/
+.class-bot-border{
+	border-bottom: 1.5px dotted darkgrey;
+	margin-bottom: 8px;
+}
+/*end-class*/

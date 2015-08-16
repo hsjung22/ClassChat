@@ -1,0 +1,152 @@
+<script>
+  $(document).ready(function(){
+    var socket = io.connect('http://localhost:8000/');
+
+    socket.emit('join_room', "<%= @group.id %>");
+    console.log('connected' + ' to room: ' + "<%= @group.id %>");
+    $('#chat-submit').submit(function(){
+
+      var message = "<%= current_user.first_name %>" + " <%= current_user.last_name %>: " + $('#chat-input').val();
+      
+      socket.emit("send_message", {message: message});
+      $('#chat-input').val('');
+      return false;
+    })
+
+    socket.on('chat-sent', function(message){
+      $('#chat-box').append($('<p>').text(message.message));
+      $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+    })
+
+    $('#dashboard').click(function(){
+      socket.emit("leaving_room", "<%= @group.id %>");
+    })
+
+
+
+  })
+  
+</script>
+
+<div class="row v-top">
+  <div class="container">
+    <div class="col-md-3">
+      <h2 class="main-header">
+        <form id="home" action='/classes' method='get'>
+          <a class="main-header" href="javascript:{}" onclick="document.getElementById('home').submit();">ClassChat</a>
+        </form>
+      </h2>
+    </div>
+
+    <div class="pull-right">
+
+      <% if current_user %>
+        <form class="space15" action='/sessions' method='post'>
+          <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+          <input type='hidden' name='_method' value='delete'>
+          <button type='submit' class="btn btn-default">Log Out</button>
+        </form>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-2 col-md-8">
+      <h3 class="text-center"><%= @group.name %></h3>  
+    </div>
+    <div class="col-md-2">
+      <p class="pull-right bottom-align">Created by: 
+        <% if @group.user == current_user %>
+          You
+    <% else %><%= @group.user.first_name %>
+    <%= @group.user.last_name %>
+    <% end %></p>
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-md-2 btspc">
+      <div class="row">
+        <% if @groups_joined.include? @group %>
+          <form action="/members/<%= @group.id %>" method="post">
+            <input type='hidden' name='authenticity_token' value="<%=form_authenticity_token %>">
+            <input type='hidden' name='_method' value='delete'>
+            <button type='submit' class='btn btn-default'>Leave Class</button>
+          </form>
+        <% else %>
+          <form action="/members" method="post">
+            <input type='hidden' name='authenticity_token' value="<%=form_authenticity_token %>">
+            <button type='submit' name='group' class='btn btn-default' value="<%= @group.id %>">Join Class</button>
+          </form>
+        <% end %>
+      </div>
+      <div class="row">
+        <p class='space15 pull-left'><span class="emphi">Students:</span></p>
+      </div>
+      <div class="row">
+        <% @members.each do |member| %>          
+          <p><%= member.first_name %> <%= member.last_name %></p>
+        <% end %>
+      </div>
+    </div>
+  
+
+    <div class="col-md-6 btspc padding-right30">
+      <p class="emphi">Message Board!</p>
+      <div class="row"> 
+        <form action='/classes/<%= @group.id %>/posts' method='post'>
+          <input type='hidden' name='authenticity_token' value="<%=form_authenticity_token %>">
+          <div class="form-group-show">
+            <textarea placeholder="Add a new post" class="form-control" rows="2" name="content"></textarea>
+          </div>
+          <button class="btn btn-default pull-right" type='submit'>Post</button>
+        </form>
+      </div>
+
+        <% @posts.reverse_each do |post| %>
+      <div class="row post-top-border">
+          <p><strong><%= post.user.first_name %></strong>: &nbsp<%= post.content %></p>
+          <p class="comment-time"><em><%= time_ago_in_words(post.created_at)%></em></p>
+      </div>
+          <% post.comments.each do |c| %>
+      <div class="row comment-ind comment-top-border">
+            <p><strong><%= c.user.first_name %></strong>: &nbsp<%= c.content %></p>
+            <p class="comment-time"><em><%= time_ago_in_words(c.created_at)%></em></p>
+      </div>
+          <% end %>
+      <div class="row comment-ind">
+          <form action='/posts/<%= post.id %>/comments' method='post'>
+            <input type='hidden' name='authenticity_token' value="<%=form_authenticity_token %>">
+            <div class="form-group-show">
+              <textarea placeholder="Add a comment" class="form-control" rows="2" name="content"></textarea>
+            </div>
+            <button class="btn btn-default pull-right" type='submit'>Comment</button>
+          </form>
+      </div>
+        <% end %> 
+    </div>
+
+    <div class="col-md-4 btspc">
+      <!-- //chatroom// -->
+      <div id='chatroom'>
+          <p class="emphi">Live Chat!</p>
+        <div class="chat-input padding-chat" id='chat-box'>
+        </div>
+        <form id="chat-submit">
+          <input class="form-control" id="chat-input">
+        </form>
+      </div>
+      <!-- end chatroom -->
+    </div>
+  </div>
+  
+</div>
+
